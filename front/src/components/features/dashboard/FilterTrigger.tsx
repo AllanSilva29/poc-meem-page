@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -24,6 +25,7 @@ const FilterTrigger = () => {
       <SheetContent side="left" className="w-[350px] sm:w-[400px] p-0">
         <div className="flex h-full flex-col p-6">
             <SheetHeader>
+              <SheetDescription />
               <SheetTitle className="text-xl">Filtros de Análise</SheetTitle>
             </SheetHeader>
             <div className="mt-4 flex-grow">
