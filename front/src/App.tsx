@@ -7,7 +7,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<DashboardPage />} />
-        {/* Outras rotas da aplicação podem ser adicionadas aqui no futuro */}
       </Routes>
     </BrowserRouter>
   );

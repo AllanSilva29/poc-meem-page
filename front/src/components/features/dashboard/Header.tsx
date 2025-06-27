@@ -10,7 +10,7 @@ const Header = () => {
         <ArrowLeft className="mr-2 h-4 w-4" />
         Voltar
       </Button>
-      <h1 className="text-xl font-bold text-foreground">Dashboard MEEM</h1>
+      <h1 className="text-2xl font-bold text-foreground">Dashboard MEEM</h1>
       <Button>
         <Download className="mr-2 h-4 w-4" />
         Exportar Relatório
