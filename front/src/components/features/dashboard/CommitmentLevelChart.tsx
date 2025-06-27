@@ -22,7 +22,7 @@ const CommitmentLevelChart = () => (
     <CardHeader>
       <CardTitle className="text-xl font-semibold">Distribuição por Nível de Comprometimento</CardTitle>
     </CardHeader>
-    <CardContent className="h-80">
+    <CardContent className="h-120">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart 
             data={mockData} 
