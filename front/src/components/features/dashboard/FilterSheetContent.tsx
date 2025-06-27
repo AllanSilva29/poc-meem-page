@@ -28,18 +28,18 @@ const FilterSheetContent = () => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                <Calendar mode="single" selected={initialDate} onSelect={setInitialDate} initialFocus />
               </PopoverContent>
             </Popover>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant={"outline"} className="justify-start font-normal">
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? date.toLocaleDateString('pt-BR') : <span>Data Final</span>}
+                  {finalDate ? finalDate.toLocaleDateString('pt-BR') : <span>Data Final</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" />
+                <Calendar mode="single" selected={finalDate} onSelect={setFinalDate} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
