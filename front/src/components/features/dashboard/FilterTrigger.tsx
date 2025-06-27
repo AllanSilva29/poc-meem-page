@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
 import Placeholder from "@/components/shared/Placeholder";
+import FilterSheetContent from "./FilterSheetContent";
 
 const FilterTrigger = () => {
   return (
@@ -20,14 +21,14 @@ const FilterTrigger = () => {
           <SlidersHorizontal className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[350px] sm:w-[400px]">
-        <SheetHeader>
-          <SheetTitle className="text-xl">Filtros de Análise</SheetTitle>
-        </SheetHeader>
-        <div className="mt-4 h-[calc(100%-2rem)]">
-          <Placeholder>
-            <p>Aqui ficarão os filtros de data, faixa etária, etc.</p>
-          </Placeholder>
+      <SheetContent side="left" className="w-[350px] sm:w-[400px] p-0">
+        <div className="flex h-full flex-col p-6">
+            <SheetHeader>
+              <SheetTitle className="text-xl">Filtros de Análise</SheetTitle>
+            </SheetHeader>
+            <div className="mt-4 flex-grow">
+                <FilterSheetContent />
+            </div>
         </div>
       </SheetContent>
     </Sheet>
