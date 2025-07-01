@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { AlertTriangle } from "lucide-react";
 
 const mockPatients = [
-  { id: '001', name: 'Paciente 001', age: 65, score: 28, date: '01/12/2023', level: 'Normal' },
-  { id: '002', name: 'Paciente 002', age: 73, score: 22, date: '02/12/2023', level: 'Leve' },
-  { id: '003', name: 'Paciente 003', age: 82, score: 8, date: '03/12/2023', level: 'Grave' },
-  { id: '004', name: 'Paciente 004', age: 68, score: 19, date: '04/12/2023', level: 'Moderado' },
-  { id: '005', name: 'Paciente 005', age: 75, score: 25, date: '05/12/2023', level: 'Normal' },
+  { id: '001', name: 'Paciente 001', scholarity: "Ensino Superior", age: 65, score: 28, date: '01/12/2023', level: 'Normal', gender: 'M' },
+  { id: '002', name: 'Paciente 002', scholarity: "Analfabeto", age: 73, score: 22, date: '02/12/2023', level: 'Leve', gender: 'F' },
+  { id: '003', name: 'Paciente 003', scholarity: "Ensino Médio", age: 82, score: 8, date: '03/12/2023', level: 'Grave', gender: 'F' },
+  { id: '004', name: 'Paciente 004', scholarity: "Ensino Fundamental", age: 68, score: 19, date: '04/12/2023', level: 'Moderado', gender: 'M' },
+  { id: '005', name: 'Paciente 005', scholarity: "Ensino Superior", age: 75, score: 25, date: '05/12/2023', level: 'Normal', gender: 'M' },
 ];
 
 const getBadgeClass = (level: string) => {
@@ -31,6 +31,7 @@ const PatientList = () => (
         <TableHeader>
           <TableRow>
             <TableHead>Nome</TableHead>
+              <TableHead>Escolaridade</TableHead>
             <TableHead>Idade</TableHead>
             <TableHead>Pontuação</TableHead>
             <TableHead>Data</TableHead>
@@ -46,6 +47,7 @@ const PatientList = () => (
                   {patient.name}
                 </div>
               </TableCell>
+                <TableCell>{patient.scholarity}</TableCell>
               <TableCell>{patient.age}</TableCell>
               <TableCell className={patient.level === 'Grave' ? 'text-red-600 font-bold' : ''}>{patient.score}</TableCell>
               <TableCell>{patient.date}</TableCell>

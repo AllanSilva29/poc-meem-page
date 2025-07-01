@@ -2,11 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 const mockData = [
-  { region: 'Sul', Normal: 40, Leve: 35, Moderado: 15, Grave: 10 },
-  { region: 'Sudeste', Normal: 45, Leve: 30, Moderado: 15, Grave: 10 },
-  { region: 'Centro-Oeste', Normal: 35, Leve: 40, Moderado: 18, Grave: 7 },
-  { region: 'Norte', Normal: 30, Leve: 35, Moderado: 25, Grave: 10 },
-  { region: 'Nordeste', Normal: 33, Leve: 33, Moderado: 22, Grave: 12 },
+  { district: 'Boqueirão', Normal: 40, Leve: 35, Moderado: 15, Grave: 10 },
+  { district: 'Santa Felicidade', Normal: 45, Leve: 30, Moderado: 15, Grave: 10 },
+  { district: 'Cajuru', Normal: 35, Leve: 40, Moderado: 18, Grave: 7 },
+  { district: 'Portão', Normal: 30, Leve: 35, Moderado: 25, Grave: 10 },
+  { district: 'Bairro Alto', Normal: 33, Leve: 33, Moderado: 22, Grave: 12 },
 ];
 
 const colors = {
@@ -29,7 +29,7 @@ const CommitmentLevelChart = () => (
             margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="region" />
+          <XAxis dataKey="district" />
           <YAxis domain={[0, 100]} tickFormatter={(tick) => `${tick}`} />
           <Tooltip formatter={(value, name) => [`${value}%`, name]} />
           <Legend
