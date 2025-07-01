@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import FilterTrigger from "./FilterTrigger";
 
-const Header = () => {
+const Header = ({ onExport }: { onExport: () => void }) => {
   return (
     <header className="flex items-center justify-between">
       
@@ -11,7 +11,7 @@ const Header = () => {
         Voltar
       </Button>
       <h1 className="text-2xl font-bold text-foreground">Dashboard MEEM</h1>
-      <Button>
+      <Button onClick={onExport}>
         <Download className="mr-2 h-4 w-4" />
         Exportar Relatório
       </Button>
