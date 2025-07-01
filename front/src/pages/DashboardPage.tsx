@@ -36,7 +36,7 @@ const DashboardPage = () => {
       />
       <div className="flex flex-col gap-6 p-4 pl-20 sm:p-6 sm:pl-24 lg:p-8 lg:pl-28">
         <Header />
-        <TemporalTrendChart />
+        <TemporalTrendChart ageRange={filters.ageRange} initialDate={filters.initialDate} finalDate={filters.finalDate} />
         <CommitmentLevelChart />
         <PatientList filters={filters} />
       </div>

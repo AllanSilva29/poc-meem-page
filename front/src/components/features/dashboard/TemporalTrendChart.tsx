@@ -16,26 +16,87 @@ const mockData = [
   { month: 'Dez', '60-70': 26, '71-80': 24, '81+': 20 },
 ];
 
-const TemporalTrendChart = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-xl font-semibold">Tendência Temporal MEEM</CardTitle>
-    </CardHeader>
-    <CardContent className="h-72">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={mockData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis domain={[0, 30]} />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="60-70" stroke="#ef4444" name="60-70 anos" />
-          <Line type="monotone" dataKey="71-80" stroke="#14b8a6" name="71-80 anos" />
-          <Line type="monotone" dataKey="81+"  stroke="#274754" name="81+ anos" />
-        </LineChart>
-      </ResponsiveContainer>
-    </CardContent>
-  </Card>
-);
+type TemporalTrendChartProps = {
+  ageRange: "Todas as faixas" | "60-70" | "71-80" | "81+";
+  initialDate?: Date;
+  finalDate?: Date;
+};
+
+const ageRangeLines = [
+  { key: '60-70', color: '#ef4444', name: '60-70 anos' },
+  { key: '71-80', color: '#14b8a6', name: '71-80 anos' },
+  { key: '81+', color: '#274754', name: '81+ anos' },
+];
+
+const monthMap: { [key: string]: number } = {
+  'Jan': 0, 'Fev': 1, 'Mar': 2, 'Abr': 3, 'Mai': 4, 'Jun': 5,
+  'Jul': 6, 'Ago': 7, 'Set': 8, 'Out': 9, 'Nov': 10, 'Dez': 11
+};
+const monthNames = [
+  'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+  'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+];
+
+function getMonthDate(month: string, year = 2023) {
+  return new Date(year, monthMap[month], 1);
+}
+
+function getMonthIndex(month: string) {
+  return monthMap[month];
+}
+
+function getFilteredMonths(initialDate?: Date, finalDate?: Date) {
+  let startIdx = 0;
+  let endIdx = 11;
+  if (initialDate && finalDate) {
+    // If initialDate > finalDate, show only the month of initialDate
+    if (initialDate > finalDate) {
+      startIdx = endIdx = initialDate.getMonth();
+    } else {
+      startIdx = initialDate.getMonth();
+      endIdx = finalDate.getMonth();
+    }
+  } else if (initialDate) {
+    startIdx = initialDate.getMonth();
+    endIdx = Math.min(startIdx + 11, 11);
+  } else if (finalDate) {
+    endIdx = finalDate.getMonth();
+    startIdx = Math.max(endIdx - 11, 0);
+  }
+  // Clamp to 12 months
+  if (endIdx - startIdx > 11) endIdx = startIdx + 11;
+  return monthNames.slice(startIdx, endIdx + 1);
+}
+
+const TemporalTrendChart = ({ ageRange, initialDate, finalDate }: TemporalTrendChartProps) => {
+  const filteredMonths = getFilteredMonths(initialDate, finalDate);
+  const filteredData = mockData.filter((item) => filteredMonths.includes(item.month));
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Tendência Temporal MEEM</CardTitle>
+      </CardHeader>
+      <CardContent className="h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={filteredData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis domain={[0, 30]} />
+            <Tooltip />
+            <Legend />
+            {ageRange === 'Todas as faixas'
+              ? ageRangeLines.map(line => (
+                  <Line key={line.key} type="monotone" dataKey={line.key} stroke={line.color} name={line.name} />
+                ))
+              : ageRangeLines.filter(line => line.key === ageRange).map(line => (
+                  <Line key={line.key} type="monotone" dataKey={line.key} stroke={line.color} name={line.name} />
+                ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default TemporalTrendChart;

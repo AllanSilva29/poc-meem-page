@@ -41,11 +41,14 @@ function parseDate(dateStr: string) {
 const PatientList = ({ filters }: PatientListProps) => {
   const filteredPatients = mockPatients.filter((patient) => {
     // Date filter
-    if (filters.initialDate) {
+    if (filters.initialDate && filters.finalDate) {
+      const patientDate = parseDate(patient.date);
+      if (filters.initialDate > filters.finalDate) return false;
+      if (patientDate < filters.initialDate || patientDate > filters.finalDate) return false;
+    } else if (filters.initialDate) {
       const patientDate = parseDate(patient.date);
       if (patientDate < filters.initialDate) return false;
-    }
-    if (filters.finalDate) {
+    } else if (filters.finalDate) {
       const patientDate = parseDate(patient.date);
       if (patientDate > filters.finalDate) return false;
     }
