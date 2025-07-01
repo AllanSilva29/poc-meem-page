@@ -38,7 +38,7 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={filters.initialDate} onSelect={(date) => onFilterChange('initialDate', date)} initialFocus />
+                <Calendar mode="single" selected={filters.initialDate} onSelect={(date) => onFilterChange('initialDate', date)} initialFocus captionLayout="dropdown" />
               </PopoverContent>
             </Popover>
             <Popover>
@@ -49,7 +49,7 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={filters.finalDate} onSelect={(date) => onFilterChange('finalDate', date)} initialFocus />
+                <Calendar mode="single" selected={filters.finalDate} onSelect={(date) => onFilterChange('finalDate', date)} initialFocus captionLayout="dropdown" />
               </PopoverContent>
             </Popover>
           </div>
