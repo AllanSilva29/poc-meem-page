@@ -4,6 +4,7 @@ import TemporalTrendChart from "@/components/features/dashboard/TemporalTrendCha
 import CommitmentLevelChart from "@/components/features/dashboard/CommitmentLevelChart";
 import PatientList from "@/components/features/dashboard/PatientList";
 import { useState } from "react";
+import { getDistrictDataByCity } from "@/services/mockData";
 
 const defaultFilters = {
   initialDate: undefined,
@@ -15,6 +16,8 @@ const defaultFilters = {
 };
 
 type FilterState = typeof defaultFilters;
+  // Chart data
+  const chartData = filters.locality ? getDistrictDataByCity(filters.locality) : null;
 
 const DashboardPage = () => {
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
@@ -37,7 +40,7 @@ const DashboardPage = () => {
       <div className="flex flex-col gap-6 p-4 pl-20 sm:p-6 sm:pl-24 lg:p-8 lg:pl-28">
         <Header />
         <TemporalTrendChart ageRange={filters.ageRange} initialDate={filters.initialDate} finalDate={filters.finalDate} />
-        <CommitmentLevelChart />
+        <CommitmentLevelChart locality={filters.locality} />
         <PatientList filters={filters} />
       </div>
     </div>

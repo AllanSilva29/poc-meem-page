@@ -1,13 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { getDistrictDataByCity } from "@/services/mockData";
 
-const mockData = [
-  { district: 'Boqueirão', Normal: 40, Leve: 35, Moderado: 15, Grave: 10 },
-  { district: 'Santa Felicidade', Normal: 45, Leve: 30, Moderado: 15, Grave: 10 },
-  { district: 'Cajuru', Normal: 35, Leve: 40, Moderado: 18, Grave: 7 },
-  { district: 'Portão', Normal: 30, Leve: 35, Moderado: 25, Grave: 10 },
-  { district: 'Bairro Alto', Normal: 33, Leve: 33, Moderado: 22, Grave: 12 },
-];
+interface CommitmentLevelChartProps {
+  locality?: string;
+}
 
 const colors = {
     Normal: '#f87171', 
@@ -16,39 +13,62 @@ const colors = {
     Grave: '#facc15'
 };
 
+const CommitmentLevelChart = ({ locality }: CommitmentLevelChartProps) => {
+  const chartData = locality ? getDistrictDataByCity(locality) : null;
+  const hasData = chartData && chartData.length > 0;
 
-const CommitmentLevelChart = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-xl font-semibold">Distribuição por Nível de Comprometimento</CardTitle>
-    </CardHeader>
-    <CardContent className="h-120">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart 
-            data={mockData} 
-            margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="district" />
-          <YAxis domain={[0, 100]} tickFormatter={(tick) => `${tick}`} />
-          <Tooltip formatter={(value, name) => [`${value}%`, name]} />
-          <Legend
-            payload={[
-                { value: 'Normal', type: 'square', id: 'ID01', color: colors.Normal },
-                { value: 'Leve', type: 'square', id: 'ID02', color: colors.Leve },
-                { value: 'Moderado', type: 'square', id: 'ID03', color: colors.Moderado },
-                { value: 'Grave', type: 'square', id: 'ID04', color: colors.Grave },
-            ]}
-            wrapperStyle={{ paddingTop: '20px' }} 
-          />
-          <Bar dataKey="Normal" stackId="a" fill={colors.Normal} name="Normal" />
-          <Bar dataKey="Leve" stackId="a" fill={colors.Leve} name="Leve" />
-          <Bar dataKey="Moderado" stackId="a" fill={colors.Moderado} name="Moderado" />
-          <Bar dataKey="Grave" stackId="a" fill={colors.Grave} name="Grave" />
-        </BarChart>
-      </ResponsiveContainer>
-    </CardContent>
-  </Card>
-);
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">
+          Distribuição por Nível de Comprometimento
+          {locality && hasData && (
+            <span className="text-sm font-normal text-muted-foreground ml-2">
+              - {locality}
+            </span>
+          )}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="h-120">
+        {!hasData ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <div className="text-4xl text-muted-foreground mb-2">📊</div>
+              <p className="text-lg font-medium text-muted-foreground">Sem dados</p>
+              <p className="text-sm text-muted-foreground">
+                {locality ? `Nenhum dado encontrado para "${locality}"` : "Selecione uma localidade para visualizar os dados"}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart 
+                data={chartData} 
+                margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="district" />
+              <YAxis domain={[0, 100]} tickFormatter={(tick) => `${tick}`} />
+              <Tooltip formatter={(value, name) => [`${value}%`, name]} />
+              <Legend
+                payload={[
+                    { value: 'Normal', type: 'square', id: 'ID01', color: colors.Normal },
+                    { value: 'Leve', type: 'square', id: 'ID02', color: colors.Leve },
+                    { value: 'Moderado', type: 'square', id: 'ID03', color: colors.Moderado },
+                    { value: 'Grave', type: 'square', id: 'ID04', color: colors.Grave },
+                ]}
+                wrapperStyle={{ paddingTop: '20px' }} 
+              />
+              <Bar dataKey="Normal" stackId="a" fill={colors.Normal} name="Normal" />
+              <Bar dataKey="Leve" stackId="a" fill={colors.Leve} name="Leve" />
+              <Bar dataKey="Moderado" stackId="a" fill={colors.Moderado} name="Moderado" />
+              <Bar dataKey="Grave" stackId="a" fill={colors.Grave} name="Grave" />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
 
 export default CommitmentLevelChart;

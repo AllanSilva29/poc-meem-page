@@ -112,8 +112,17 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
             <Label htmlFor="localidade">Localidade</Label>
             <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input id="localidade" placeholder="Digite a localidade" className="pl-8" value={filters.locality} onChange={e => onFilterChange('locality', e.target.value)} />
+                <Input 
+                  id="localidade" 
+                  placeholder="Digite a localidade (ex: Curitiba, São Paulo)" 
+                  className="pl-8" 
+                  value={filters.locality} 
+                  onChange={e => onFilterChange('locality', e.target.value)} 
+                />
             </div>
+            <p className="text-xs text-muted-foreground">
+              Cidades disponíveis: Curitiba, São Paulo
+            </p>
         </div>
       </div>
       <Button variant="outline" className="w-full" onClick={onClearFilters}>Limpar Filtros</Button>
