@@ -21,45 +21,92 @@ const getBadgeClass = (level: string) => {
     }
 }
 
-const PatientList = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-xl font-semibold">Lista de Pacientes</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nome</TableHead>
+type PatientListProps = {
+  filters: {
+    initialDate?: Date;
+    finalDate?: Date;
+    ageRange: string;
+    scholarity: string;
+    gender: string;
+    locality: string;
+  };
+};
+
+function parseDate(dateStr: string) {
+  // dateStr: 'dd/mm/yyyy'
+  const [day, month, year] = dateStr.split('/').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+const PatientList = ({ filters }: PatientListProps) => {
+  const filteredPatients = mockPatients.filter((patient) => {
+    // Date filter
+    if (filters.initialDate) {
+      const patientDate = parseDate(patient.date);
+      if (patientDate < filters.initialDate) return false;
+    }
+    if (filters.finalDate) {
+      const patientDate = parseDate(patient.date);
+      if (patientDate > filters.finalDate) return false;
+    }
+    // Age range filter
+    if (filters.ageRange !== 'Todas as faixas') {
+      if (filters.ageRange === '60-70' && (patient.age < 60 || patient.age > 70)) return false;
+      if (filters.ageRange === '71-80' && (patient.age < 71 || patient.age > 80)) return false;
+      if (filters.ageRange === '81+' && patient.age < 81) return false;
+    }
+    // Scholarity filter
+    if (filters.scholarity !== 'Todas as escolaridades' && patient.scholarity !== filters.scholarity) {
+      return false;
+    }
+    // Gender filter
+    if (filters.gender !== 'Todos' && patient.gender !== filters.gender) {
+      return false;
+    }
+    // Locality filter (not implemented)
+    return true;
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Lista de Pacientes</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nome</TableHead>
               <TableHead>Escolaridade</TableHead>
-            <TableHead>Idade</TableHead>
-            <TableHead>Pontuação</TableHead>
-            <TableHead>Data</TableHead>
-            <TableHead>Nível</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {mockPatients.map((patient) => (
-            <TableRow key={patient.id} className="h-16">
-              <TableCell className="font-medium">
-                <div className="flex items-center gap-2">
-                  {patient.level === 'Grave' && <AlertTriangle className="h-4 w-4 text-red-500" />}
-                  {patient.name}
-                </div>
-              </TableCell>
-                <TableCell>{patient.scholarity}</TableCell>
-              <TableCell>{patient.age}</TableCell>
-              <TableCell className={patient.level === 'Grave' ? 'text-red-600 font-bold' : ''}>{patient.score}</TableCell>
-              <TableCell>{patient.date}</TableCell>
-              <TableCell>
-                <Badge variant="outline" className={getBadgeClass(patient.level)}>{patient.level}</Badge>
-              </TableCell>
+              <TableHead>Idade</TableHead>
+              <TableHead>Pontuação</TableHead>
+              <TableHead>Data</TableHead>
+              <TableHead>Nível</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </CardContent>
-  </Card>
-);
+          </TableHeader>
+          <TableBody>
+            {filteredPatients.map((patient) => (
+              <TableRow key={patient.id} className="h-16">
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-2">
+                    {patient.level === 'Grave' && <AlertTriangle className="h-4 w-4 text-red-500" />}
+                    {patient.name}
+                  </div>
+                </TableCell>
+                <TableCell>{patient.scholarity}</TableCell>
+                <TableCell>{patient.age}</TableCell>
+                <TableCell className={patient.level === 'Grave' ? 'text-red-600 font-bold' : ''}>{patient.score}</TableCell>
+                <TableCell>{patient.date}</TableCell>
+                <TableCell>
+                  <Badge variant="outline" className={getBadgeClass(patient.level)}>{patient.level}</Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default PatientList;

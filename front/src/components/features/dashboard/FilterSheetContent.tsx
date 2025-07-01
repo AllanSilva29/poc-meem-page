@@ -9,10 +9,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CalendarIcon, Search } from "lucide-react";
 import { useState } from "react";
 
-const FilterSheetContent = () => {
-  const [initialDate, setInitialDate] = useState<Date | undefined>();
-  const [finalDate, setFinalDate] = useState<Date | undefined>();
+type FilterSheetContentProps = {
+  filters: {
+    initialDate?: Date;
+    finalDate?: Date;
+    ageRange: string;
+    scholarity: string;
+    gender: string;
+    locality: string;
+  };
+  onFilterChange: (key: string, value: any) => void;
+  onClearFilters: () => void;
+};
 
+const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterSheetContentProps) => {
   return (
     <div className="flex h-full flex-col gap-6">
       <div className="flex-1 space-y-8 overflow-y-auto pr-4">
@@ -24,22 +34,22 @@ const FilterSheetContent = () => {
               <PopoverTrigger asChild>
                 <Button variant={"outline"} className="justify-start font-normal">
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {initialDate ? initialDate.toLocaleDateString('pt-BR') : <span>Data Inicial</span>}
+                  {filters.initialDate ? filters.initialDate.toLocaleDateString('pt-BR') : <span>Data Inicial</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={initialDate} onSelect={setInitialDate} initialFocus />
+                <Calendar mode="single" selected={filters.initialDate} onSelect={(date) => onFilterChange('initialDate', date)} initialFocus />
               </PopoverContent>
             </Popover>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant={"outline"} className="justify-start font-normal">
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {finalDate ? finalDate.toLocaleDateString('pt-BR') : <span>Data Final</span>}
+                  {filters.finalDate ? filters.finalDate.toLocaleDateString('pt-BR') : <span>Data Final</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={finalDate} onSelect={setFinalDate} initialFocus />
+                <Calendar mode="single" selected={filters.finalDate} onSelect={(date) => onFilterChange('finalDate', date)} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
@@ -48,12 +58,12 @@ const FilterSheetContent = () => {
         {/* Faixa Etária */}
         <div className="space-y-2">
           <Label>Faixa Etária</Label>
-          <Select>
+          <Select value={filters.ageRange} onValueChange={(value) => onFilterChange('ageRange', value)}>
             <SelectTrigger>
               <SelectValue placeholder="Todas as faixas" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Todas as faixas</SelectItem>
+              <SelectItem value="Todas as faixas">Todas as faixas</SelectItem>
               <SelectItem value="60-70">60-70 anos</SelectItem>
               <SelectItem value="71-80">71-80 anos</SelectItem>
               <SelectItem value="81+">81+ anos</SelectItem>
@@ -64,32 +74,26 @@ const FilterSheetContent = () => {
         {/* Escolaridade */}
         <div className="space-y-2">
             <Label>Escolaridade</Label>
-            <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="analfabeto" />
-                    <Label htmlFor="analfabeto" className="font-normal">Analfabeto</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="fundamental" />
-                    <Label htmlFor="fundamental" className="font-normal">Ensino Fundamental</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="medio" />
-                    <Label htmlFor="medio" className="font-normal">Ensino Médio</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="superior" />
-                    <Label htmlFor="superior" className="font-normal">Superior</Label>
-                </div>
-            </div>
+            <Select value={filters.scholarity} onValueChange={(value) => onFilterChange('scholarity', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Todas as escolaridades" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Todas as escolaridades">Todas as escolaridades</SelectItem>
+                <SelectItem value="Analfabeto">Analfabeto</SelectItem>
+                <SelectItem value="Ensino Fundamental">Ensino Fundamental</SelectItem>
+                <SelectItem value="Ensino Médio">Ensino Médio</SelectItem>
+                <SelectItem value="Ensino Superior">Ensino Superior</SelectItem>
+              </SelectContent>
+            </Select>
         </div>
 
         {/* Gênero */}
         <div className="space-y-2">
             <Label>Gênero</Label>
-            <RadioGroup defaultValue="todos" className="flex items-center space-x-4">
+            <RadioGroup value={filters.gender} onValueChange={(value) => onFilterChange('gender', value)} className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="todos" id="todos" />
+                    <RadioGroupItem value="Todos" id="todos" />
                     <Label htmlFor="todos" className="font-normal">Todos</Label>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -108,11 +112,11 @@ const FilterSheetContent = () => {
             <Label htmlFor="localidade">Localidade</Label>
             <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input id="localidade" placeholder="Digite a localidade" className="pl-8" />
+                <Input id="localidade" placeholder="Digite a localidade" className="pl-8" value={filters.locality} onChange={e => onFilterChange('locality', e.target.value)} />
             </div>
         </div>
       </div>
-      <Button variant="outline" className="w-full">Limpar Filtros</Button>
+      <Button variant="outline" className="w-full" onClick={onClearFilters}>Limpar Filtros</Button>
     </div>
   );
 };

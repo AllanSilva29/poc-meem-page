@@ -11,7 +11,11 @@ import { SlidersHorizontal } from "lucide-react";
 import Placeholder from "@/components/shared/Placeholder";
 import FilterSheetContent from "./FilterSheetContent";
 
-const FilterTrigger = () => {
+const FilterTrigger = ({ filters, onFilterChange, onClearFilters }: {
+  filters: any,
+  onFilterChange: (key: string, value: any) => void,
+  onClearFilters: () => void
+}) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -29,7 +33,11 @@ const FilterTrigger = () => {
               <SheetTitle className="text-xl">Filtros de Análise</SheetTitle>
             </SheetHeader>
             <div className="mt-4 flex-grow">
-                <FilterSheetContent />
+                <FilterSheetContent 
+                  filters={filters}
+                  onFilterChange={onFilterChange}
+                  onClearFilters={onClearFilters}
+                />
             </div>
         </div>
       </SheetContent>
