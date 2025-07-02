@@ -1,18 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { temporalTrendMockData, getFilteredMonths } from "@/services/dashboardService";
+import { getFilteredMonths } from "@/services/utils/dateUtils";
+import { ageRangeLines } from "@/services/constants";
+import { temporalTrendMockData } from "@/services/data/temporalTrend";
+import { type AgeRange } from "@/services/types/common";
 
 type TemporalTrendChartProps = {
-  ageRange: "Todas as faixas" | "60-70" | "71-80" | "81+";
+  ageRange: AgeRange;
   initialDate?: Date;
   finalDate?: Date;
 };
-
-const ageRangeLines = [
-  { key: '60-70', color: '#ef4444', name: '60-70 anos' },
-  { key: '71-80', color: '#14b8a6', name: '71-80 anos' },
-  { key: '81+', color: '#274754', name: '81+ anos' },
-];
 
 const TemporalTrendChart = ({ ageRange, initialDate, finalDate }: TemporalTrendChartProps) => {
   const filteredMonths = getFilteredMonths(initialDate, finalDate);

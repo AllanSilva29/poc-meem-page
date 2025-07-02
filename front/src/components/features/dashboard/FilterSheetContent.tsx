@@ -1,23 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CalendarIcon, Search } from "lucide-react";
-import { useState } from "react";
+import { type FilterState } from "@/services/types/filter";
+import { ageRangeOptions, scholarityOptions, genderOptions, availableCities } from "@/services/constants";
 
 type FilterSheetContentProps = {
-  filters: {
-    initialDate?: Date;
-    finalDate?: Date;
-    ageRange: string;
-    scholarity: string;
-    gender: string;
-    locality: string;
-  };
+  filters: FilterState;
   onFilterChange: (key: string, value: any) => void;
   onClearFilters: () => void;
 };
@@ -63,10 +56,11 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
               <SelectValue placeholder="Todas as faixas" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Todas as faixas">Todas as faixas</SelectItem>
-              <SelectItem value="60-70">60-70 anos</SelectItem>
-              <SelectItem value="71-80">71-80 anos</SelectItem>
-              <SelectItem value="81+">81+ anos</SelectItem>
+              {ageRangeOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -79,11 +73,11 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
                 <SelectValue placeholder="Todas as escolaridades" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Todas as escolaridades">Todas as escolaridades</SelectItem>
-                <SelectItem value="Analfabeto">Analfabeto</SelectItem>
-                <SelectItem value="Ensino Fundamental">Ensino Fundamental</SelectItem>
-                <SelectItem value="Ensino Médio">Ensino Médio</SelectItem>
-                <SelectItem value="Ensino Superior">Ensino Superior</SelectItem>
+                {scholarityOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
         </div>
@@ -92,18 +86,12 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
         <div className="space-y-2">
             <Label>Gênero</Label>
             <RadioGroup value={filters.gender} onValueChange={(value) => onFilterChange('gender', value)} className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Todos" id="todos" />
-                    <Label htmlFor="todos" className="font-normal">Todos</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="M" id="masculino" />
-                    <Label htmlFor="masculino" className="font-normal">M</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="F" id="feminino" />
-                    <Label htmlFor="feminino" className="font-normal">F</Label>
-                </div>
+                {genderOptions.map((option) => (
+                  <div key={option.value} className="flex items-center space-x-2">
+                    <RadioGroupItem value={option.value} id={option.value} />
+                    <Label htmlFor={option.value} className="font-normal">{option.label}</Label>
+                  </div>
+                ))}
             </RadioGroup>
         </div>
         
@@ -121,7 +109,7 @@ const FilterSheetContent = ({ filters, onFilterChange, onClearFilters }: FilterS
                 />
             </div>
             <p className="text-xs text-muted-foreground">
-              Cidades disponíveis: Curitiba, São Paulo
+              Cidades disponíveis: {availableCities.join(', ')}
             </p>
         </div>
       </div>

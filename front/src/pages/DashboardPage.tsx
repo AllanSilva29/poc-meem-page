@@ -5,19 +5,14 @@ import CommitmentLevelChart from "@/components/features/dashboard/CommitmentLeve
 import PatientList from "@/components/features/dashboard/PatientList";
 import { useState } from "react";
 import { saveAs } from "file-saver";
-import { getDistrictDataByCity } from "@/services/mockData";
-import { mockPatients, getFilteredMonths, generateDashboardCSV, temporalTrendMockData, filterPatients } from "@/services/dashboardService";
-
-const defaultFilters = {
-  initialDate: undefined,
-  finalDate: undefined,
-  ageRange: "Todas as faixas",
-  scholarity: "Todas as escolaridades",
-  gender: "Todos",
-  locality: "",
-};
-
-type FilterState = typeof defaultFilters;
+import { getDistrictDataByCity } from "@/services/data/cities";
+import { mockPatients } from "@/services/data/patients";
+import { temporalTrendMockData } from "@/services/data/temporalTrend";
+import { getFilteredMonths } from "@/services/utils/dateUtils";
+import { generateDashboardCSV } from "@/services/reportService";
+import { filterPatients } from "@/services/filterService";
+import { defaultFilters } from "@/services/constants";
+import { type FilterState } from "@/services/types/filter";
 
 const DashboardPage = () => {
   const [filters, setFilters] = useState<FilterState>(defaultFilters);

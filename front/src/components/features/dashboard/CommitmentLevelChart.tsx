@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { getDistrictDataByCity } from "@/services/mockData";
+import { getDistrictDataByCity } from "@/services/data/cities";
 
 interface CommitmentLevelChartProps {
   locality?: string;

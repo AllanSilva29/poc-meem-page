@@ -2,17 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle } from "lucide-react";
-import { mockPatients, filterPatients } from "@/services/dashboardService";
+import { mockPatients } from "@/services/data/patients";
+import { filterPatients } from "@/services/filterService";
+import { type FilterState } from "@/services/types/filter";
 
 type PatientListProps = {
-  filters: {
-    initialDate?: Date;
-    finalDate?: Date;
-    ageRange: string;
-    scholarity: string;
-    gender: string;
-    locality: string;
-  };
+  filters: FilterState;
 };
 
 const getBadgeClass = (level: string) => {

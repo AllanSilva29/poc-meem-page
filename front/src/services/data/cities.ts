@@ -1,14 +1,6 @@
-export interface DistrictData {
-  district: string;
-  Normal: number;
-  Leve: number;
-  Moderado: number;
-  Grave: number;
-}
+// Dados mockados de cidades e distritos
 
-export interface CityData {
-  [cityName: string]: DistrictData[];
-}
+import type { CityData, DistrictData } from '../types/visualization';
 
 export const cityDistrictsData: CityData = {
   "Curitiba": [
@@ -43,4 +35,4 @@ export const getDistrictDataByCity = (cityName: string): DistrictData[] | null =
   }
   
   return null;
-}; 
+};
